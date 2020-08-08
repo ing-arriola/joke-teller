@@ -105,18 +105,25 @@ const VoiceRSS = {
   },
 };
 
-/*VoiceRSS.speech({
-  key: "10e9aff8282c4510869c1e37fcdb083a",
-  src: "Hello, world!",
-  hl: "en-us",
-  v: "Mary",
-  r: 0,
-  c: "mp3",
-  f: "44khz_16bit_stereo",
-  ssml: false,
-});*/
+const toggleButton = () => {
+  button.disabled = !button.disabled;
+};
+
+const tellMeaJoke = (joke) => {
+  VoiceRSS.speech({
+    key: "10e9aff8282c4510869c1e37fcdb083a",
+    src: joke,
+    hl: "en-us",
+    v: "Mary",
+    r: 0,
+    c: "mp3",
+    f: "44khz_16bit_stereo",
+    ssml: false,
+  });
+};
 
 const getJoke = async () => {
+  toggleButton();
   const jokesUrl =
     "https://sv443.net/jokeapi/v2/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist";
   try {
@@ -128,11 +135,13 @@ const getJoke = async () => {
     } else {
       jokeString = `${data.setup} ... ${data.delivery}`;
     }
-    console.log(data.type);
-    console.log(jokeString);
+
+    tellMeaJoke(jokeString);
   } catch (err) {
     console.log("whoops!", err);
   }
 };
 
-getJoke();
+button.addEventListener("click", getJoke);
+
+audioElement.addEventListener("ended", toggleButton);
