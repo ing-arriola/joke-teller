@@ -105,7 +105,7 @@ const VoiceRSS = {
   },
 };
 
-VoiceRSS.speech({
+/*VoiceRSS.speech({
   key: "10e9aff8282c4510869c1e37fcdb083a",
   src: "Hello, world!",
   hl: "en-us",
@@ -114,4 +114,25 @@ VoiceRSS.speech({
   c: "mp3",
   f: "44khz_16bit_stereo",
   ssml: false,
-});
+});*/
+
+const getJoke = async () => {
+  const jokesUrl =
+    "https://sv443.net/jokeapi/v2/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist";
+  try {
+    const response = await fetch(jokesUrl);
+    const data = await response.json();
+    let jokeString = "";
+    if (data.type === "single") {
+      jokeString = data.joke;
+    } else {
+      jokeString = `${data.setup} ... ${data.delivery}`;
+    }
+    console.log(data.type);
+    console.log(jokeString);
+  } catch (err) {
+    console.log("whoops!", err);
+  }
+};
+
+getJoke();
